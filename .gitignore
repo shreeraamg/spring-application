@@ -1,0 +1,8 @@
+**/.gradle
+**/build
+**/.idea
+
+**/gradle.properties
+
+**/application.yml
+**/application.properties
