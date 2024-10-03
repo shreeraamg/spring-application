@@ -1,0 +1,25 @@
+server:
+  port: 8090
+spring:
+  config:
+    import: classpath:credentials.yml
+  application:
+    name: spring-emailservice
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: spring-application-kafka-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    topics:
+      reset-password-topic: reset-password-message-email-topic
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

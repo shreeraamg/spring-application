@@ -4,5 +4,4 @@
 
 **/gradle.properties
 
-**/application.yml
-**/application.properties
+**/credentials.yml
