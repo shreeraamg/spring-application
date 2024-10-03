@@ -2,7 +2,7 @@ package io.digitallly2024.webservice.filter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.digitallly2024.webservice.entity.User;
-import com.example.app.utils.JwtUtils;
+import io.digitallly2024.webservice.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
@@ -43,7 +44,8 @@ public class JwtFilter extends OncePerRequestFilter {
         user.setRole(decodedJWT.getClaim("role").asString());
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, List.of(new SimpleGrantedAuthority(decodedJWT.getClaim("role").asString())));
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null,
+                    List.of(new SimpleGrantedAuthority(decodedJWT.getClaim("role").asString())));
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 

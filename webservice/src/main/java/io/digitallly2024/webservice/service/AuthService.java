@@ -3,11 +3,10 @@ package io.digitallly2024.webservice.service;
 import io.digitallly2024.webservice.exception.ResourceNotFoundException;
 import io.digitallly2024.webservice.kafka.KafkaProducer;
 import io.digitallly2024.webservice.repository.UserRepository;
-import com.example.app.request.*;
 import io.digitallly2024.webservice.response.AuthenticationResponse;
 import io.digitallly2024.webservice.response.ResponseMessage;
+import io.digitallly2024.webservice.utils.JwtUtils;
 import io.digitallly2024.webservice.entity.User;
-import com.example.app.utils.JwtUtils;
 import io.digitallly2024.commonlib.domain.message.ResetPasswordMessage;
 import io.digitallly2024.webservice.request.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +39,7 @@ public class AuthService {
             JwtUtils jwtUtils,
             PasswordEncoder passwordEncoder,
             UserRepository userRepository,
-            KafkaProducer kafkaProducer
-    ) {
+            KafkaProducer kafkaProducer) {
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
@@ -49,7 +47,8 @@ public class AuthService {
     }
 
     public AuthenticationResponse register(UserRegistrationRequest request) {
-        User user = new User(request.getName(), request.getEmail(), passwordEncoder.encode(request.getPassword()), "USER");
+        User user = new User(request.getName(), request.getEmail(), passwordEncoder.encode(request.getPassword()),
+                "USER");
 
         User savedUser = userRepository.save(user);
         String token = jwtUtils.generateToken(savedUser);
@@ -59,7 +58,8 @@ public class AuthService {
     public AuthenticationResponse login(LoginRequest request) {
         User user = userRepository
                 .findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("No user found with given email: " + request.getEmail()));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("No user found with given email: " + request.getEmail()));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("Invalid email or password");
@@ -97,7 +97,8 @@ public class AuthService {
             if (Instant.now().isBefore(tokenInfo.expirationTime)) {
                 User user = userRepository
                         .findByEmail(request.getEmail())
-                        .orElseThrow(() -> new ResourceNotFoundException("No user found with given email: " + request.getEmail()));
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "No user found with given email: " + request.getEmail()));
                 user.setPassword(passwordEncoder.encode(request.getNewPassword()));
                 userRepository.save(user);
                 tokenStore.remove(request.getEmail());
