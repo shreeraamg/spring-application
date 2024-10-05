@@ -12,6 +12,7 @@ import io.digitallly2024.webservice.exception.ResourceNotFoundException;
 import io.digitallly2024.webservice.mapper.CommentMapper;
 import io.digitallly2024.webservice.mapper.ResourceMapper;
 import io.digitallly2024.webservice.repository.VoteRepository;
+import io.digitallly2024.webservice.request.CreateResourceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,9 +48,9 @@ public class ResourceService {
     }
 
     // ====================== RESOURCE ======================
-    public ResourceDto createResource(ResourceDto resourceDto) {
+    public ResourceDto createResource(CreateResourceRequest request) {
         User user = getCurrentUser();
-        Resource resource = ResourceMapper.mapToResource(resourceDto);
+        Resource resource = ResourceMapper.mapToResource(request);
         resource.setVotes(0L);
         resource.setCreatedBy(user);
 

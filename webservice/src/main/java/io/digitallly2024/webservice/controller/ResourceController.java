@@ -2,6 +2,7 @@ package io.digitallly2024.webservice.controller;
 
 import io.digitallly2024.webservice.dto.CommentDto;
 import io.digitallly2024.webservice.dto.ResourceDto;
+import io.digitallly2024.webservice.request.CreateResourceRequest;
 import io.digitallly2024.webservice.service.ResourceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,7 +33,7 @@ public class ResourceController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('USER')")
     @Operation(summary = "Create a new Resource")
-    public ResponseEntity<ResourceDto> createResource(@RequestBody ResourceDto request) {
+    public ResponseEntity<ResourceDto> createResource(@RequestBody CreateResourceRequest request) {
         ResourceDto dto = resourceService.createResource(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }

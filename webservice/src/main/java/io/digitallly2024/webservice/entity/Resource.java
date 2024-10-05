@@ -1,5 +1,6 @@
 package io.digitallly2024.webservice.entity;
 
+import io.digitallly2024.webservice.enums.ResourceEnums;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,7 +14,10 @@ public class Resource {
 
     private String title;
 
+    @Lob
     private String description;
+
+    private ResourceEnums.Category resourceCategory;
 
     private Long votes;
 
@@ -50,6 +54,14 @@ public class Resource {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ResourceEnums.Category getResourceCategory() {
+        return resourceCategory;
+    }
+
+    public void setResourceCategory(ResourceEnums.Category resourceCategory) {
+        this.resourceCategory = resourceCategory;
     }
 
     public Long getVotes() {

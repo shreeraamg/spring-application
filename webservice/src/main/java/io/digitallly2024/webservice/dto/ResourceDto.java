@@ -12,6 +12,7 @@ public class ResourceDto {
     private Long id;
     private String title;
     private String description;
+    private String category;
     private Long votes;
     private UserDto createdBy;
     private List<CommentDto> comments;
@@ -38,6 +39,14 @@ public class ResourceDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public Long getVotes() {
