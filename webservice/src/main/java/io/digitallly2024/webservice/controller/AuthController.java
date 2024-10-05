@@ -1,6 +1,5 @@
 package io.digitallly2024.webservice.controller;
 
-import com.example.app.request.*;
 import io.digitallly2024.webservice.response.AuthenticationResponse;
 import io.digitallly2024.webservice.response.ResponseMessage;
 import io.digitallly2024.webservice.service.AuthService;
@@ -24,7 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
 )
-@Tag(name = "Authentication API", description = "API for user authentication, registration and password management")
+@Tag(
+        name = "Authentication API",
+        description = "API for user authentication, registration and password management"
+)
 public class AuthController {
 
     private final AuthService authService;

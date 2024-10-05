@@ -2,7 +2,7 @@ spring:
   config:
     import: classpath:credentials.yml
   datasource:
-    url: jdbc:h2:file:/data/demo
+    url: jdbc:h2:file:/data/devDB
     username: sa
     password: password
     driver-class-name: org.h2.Driver
@@ -17,4 +17,4 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     topics:
-      reset-password-topic: reset-password-message-email-topic
+      reset-password-topic: test-topic
