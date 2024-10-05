@@ -1,6 +1,7 @@
 package io.digitallly2024.webservice.service;
 
 import io.digitallly2024.webservice.entity.Vote;
+import io.digitallly2024.webservice.enums.ResourceEnums;
 import io.digitallly2024.webservice.repository.CommentRepository;
 import io.digitallly2024.webservice.repository.ResourceRepository;
 import io.digitallly2024.webservice.dto.CommentDto;
@@ -58,9 +59,18 @@ public class ResourceService {
         return ResourceMapper.mapToResourceDto(savedResource);
     }
 
-    public List<ResourceDto> getAllResources() {
-        List<Resource> resourceList = resourceRepository.findAll();
-        return resourceList.stream().map(ResourceMapper::mapToResourceDto).toList();
+    public List<ResourceDto> getAllResources(String category, String query) {
+        List<Resource> resources;
+        if (category != null && query != null) {
+            resources = resourceRepository.findAllByResourceCategoryAndTitleContainingIgnoreCase(ResourceEnums.Category.valueOf(category), query);
+        } else if (category == null && query != null) {
+            resources = resourceRepository.findAllByTitleContainingIgnoreCase(query);
+        } else if(category != null && query == null) {
+            resources = resourceRepository.findAllByResourceCategory(ResourceEnums.Category.valueOf(category));
+        } else {
+            resources = resourceRepository.findAll();
+        }
+        return resources.stream().map(ResourceMapper::mapToResourceDto).toList();
     }
 
     public ResourceDto getResourceById(Long resourceId) {

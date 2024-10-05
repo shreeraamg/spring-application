@@ -42,8 +42,11 @@ public class ResourceController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PermitAll
     @Operation(summary = "Get all Resources")
-    public ResponseEntity<List<ResourceDto>> getAllResources() {
-        List<ResourceDto> dtoList = resourceService.getAllResources();
+    public ResponseEntity<List<ResourceDto>> getAllResources(
+            @RequestParam(required = false) String category,
+            @RequestParam(name = "q", required = false) String query
+    ) {
+        List<ResourceDto> dtoList = resourceService.getAllResources(category, query);
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
