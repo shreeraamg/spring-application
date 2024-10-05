@@ -1,13 +1,13 @@
-package io.digitallly2024.emailservice;
+package io.digitallly2024.webservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
+public class Webservice {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(Webservice.class, args);
 	}
 
 }

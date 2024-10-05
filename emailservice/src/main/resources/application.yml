@@ -7,13 +7,18 @@ spring:
     name: spring-emailservice
   kafka:
     consumer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: pkc-9q8rv.ap-south-2.aws.confluent.cloud:9092
       group-id: spring-application-kafka-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    properties:
+      security:
+        protocol: SASL_SSL
+      sasl:
+        mechanism: PLAIN
     topics:
-      reset-password-topic: test-topic
+      reset-password-topic: sa-reset-password-email-message-dev
   mail:
     host: smtp.gmail.com
     port: 587

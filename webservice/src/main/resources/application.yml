@@ -2,19 +2,25 @@ spring:
   config:
     import: classpath:credentials.yml
   datasource:
-    url: jdbc:h2:file:/data/devDB
-    username: sa
-    password: password
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/devDB
+    username: user
+    password: upassw0rd
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
-  h2:
-    console.enabled: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
   kafka:
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: pkc-9q8rv.ap-south-2.aws.confluent.cloud:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    properties:
+      security:
+        protocol: SASL_SSL
+      sasl:
+        mechanism: PLAIN
     topics:
-      reset-password-topic: test-topic
+      reset-password-topic: sa-reset-password-email-message-dev

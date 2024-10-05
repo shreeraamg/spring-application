@@ -1,13 +1,13 @@
-package io.digitallly2024.commonlib;
+package io.digitallly2024.emailservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
+public class Emailservice {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(Emailservice.class, args);
 	}
 
 }
