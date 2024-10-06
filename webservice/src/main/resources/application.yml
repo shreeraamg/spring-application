@@ -9,9 +9,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
   kafka:
     producer:
       bootstrap-servers: pkc-9q8rv.ap-south-2.aws.confluent.cloud:9092
