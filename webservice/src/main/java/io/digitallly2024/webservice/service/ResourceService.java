@@ -14,6 +14,7 @@ import io.digitallly2024.webservice.mapper.CommentMapper;
 import io.digitallly2024.webservice.mapper.ResourceMapper;
 import io.digitallly2024.webservice.repository.VoteRepository;
 import io.digitallly2024.webservice.request.CreateResourceRequest;
+import io.digitallly2024.webservice.response.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,6 +61,24 @@ public class ResourceService {
 
         Resource savedResource = resourceRepository.save(resource);
         return ResourceMapper.mapToResourceDto(savedResource);
+    }
+
+    public ResponseMessage createResources(List<CreateResourceRequest> resourceRequests) {
+        User user = getCurrentUser();
+        List<Resource> resources = resourceRequests.stream().map(resourceRequest -> {
+            Resource resource = ResourceMapper.mapToResource(resourceRequest);
+            resource.setVotes(0L);
+            resource.setCreatedBy(user);
+            return resource;
+        }).toList();
+
+        List<Resource> savedResources = resourceRepository.saveAll(resources);
+
+        if (savedResources.size() == resourceRequests.size()) {
+            return new ResponseMessage("Saved all Resources successfully");
+        } else {
+            return new ResponseMessage("Failed to save resources. Please try again later");
+        }
     }
 
     public Page<ResourceDto> getAllResources(String category, String query, int pageNumber, int pageSize) {

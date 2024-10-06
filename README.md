@@ -11,5 +11,5 @@
 - Learn and create Unit Tests.
 - Send an email when the user's password has been changed or reset.
 - ~~Add Category field to Resource~~
-- Create an API that accepts a list of resources and saves all. (Create multiple resources in one go)
+- ~~Create an API save resources in batch.~~
 - Add slug field & generate a slug for newly created resources.
