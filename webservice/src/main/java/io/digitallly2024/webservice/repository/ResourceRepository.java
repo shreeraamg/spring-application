@@ -2,6 +2,8 @@ package io.digitallly2024.webservice.repository;
 
 import io.digitallly2024.webservice.entity.Resource;
 import io.digitallly2024.webservice.enums.ResourceEnums;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,12 +15,14 @@ import java.util.List;
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
     @Query("SELECT r from Resource r WHERE r.createdBy.id = :userId")
-    List<Resource> findAllByUserId(@Param("userId") Long userId);
+    Page<Resource> findAllByUserId(@Param("userId") Long userId, Pageable pageable);
 
-    List<Resource> findAllByResourceCategory(ResourceEnums.Category category);
+    Page<Resource> findAllByResourceCategory(ResourceEnums.Category category, Pageable pageable);
 
-    List<Resource> findAllByTitleContainingIgnoreCase(String query);
+    Page<Resource> findAllByTitleContainingIgnoreCase(String query, Pageable pageable);
 
-    List<Resource> findAllByResourceCategoryAndTitleContainingIgnoreCase(ResourceEnums.Category category, String query);
+    Page<Resource> findAllByResourceCategoryAndTitleContainingIgnoreCase(
+            ResourceEnums.Category category, String query, Pageable pageable
+    );
 
 }

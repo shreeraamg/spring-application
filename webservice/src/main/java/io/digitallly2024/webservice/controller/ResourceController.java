@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,12 +43,14 @@ public class ResourceController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PermitAll
     @Operation(summary = "Get all Resources")
-    public ResponseEntity<List<ResourceDto>> getAllResources(
+    public ResponseEntity<Page<ResourceDto>> getAllResources(
             @RequestParam(required = false) String category,
-            @RequestParam(name = "q", required = false) String query
+            @RequestParam(name = "q", required = false) String query,
+            @RequestParam(defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(defaultValue = "10", required = false) int pageSize
     ) {
-        List<ResourceDto> dtoList = resourceService.getAllResources(category, query);
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+        Page<ResourceDto> resourceDtoPage = resourceService.getAllResources(category, query, pageNumber, pageSize);
+        return ResponseEntity.status(HttpStatus.OK).body(resourceDtoPage);
     }
 
 
@@ -84,9 +87,13 @@ public class ResourceController {
     @GetMapping(path = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @Operation(summary = "Get all Resources by User")
-    public ResponseEntity<List<ResourceDto>> getAllResourcesByUser(@PathVariable Long userId) {
-        List<ResourceDto> dtoList = resourceService.getResourcesByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+    public ResponseEntity<Page<ResourceDto>> getAllResourcesByUser(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(defaultValue = "10", required = false) int pageSize
+    ) {
+        Page<ResourceDto> resourceDtoPage = resourceService.getResourcesByUserId(userId, pageNumber, pageSize);
+        return ResponseEntity.status(HttpStatus.OK).body(resourceDtoPage);
     }
 
 

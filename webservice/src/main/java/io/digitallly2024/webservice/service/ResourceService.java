@@ -15,6 +15,9 @@ import io.digitallly2024.webservice.mapper.ResourceMapper;
 import io.digitallly2024.webservice.repository.VoteRepository;
 import io.digitallly2024.webservice.request.CreateResourceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -59,25 +62,30 @@ public class ResourceService {
         return ResourceMapper.mapToResourceDto(savedResource);
     }
 
-    public List<ResourceDto> getAllResources(String category, String query) {
-        List<Resource> resources;
-        if (category != null && query != null) {
-            resources = resourceRepository.findAllByResourceCategoryAndTitleContainingIgnoreCase(ResourceEnums.Category.valueOf(category), query);
-        } else if (category == null && query != null) {
-            resources = resourceRepository.findAllByTitleContainingIgnoreCase(query);
-        } else if(category != null && query == null) {
-            resources = resourceRepository.findAllByResourceCategory(ResourceEnums.Category.valueOf(category));
+    public Page<ResourceDto> getAllResources(String category, String query, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Resource> resources;
+
+        if (category != null) {
+            if (query != null) {
+                resources = resourceRepository.findAllByResourceCategoryAndTitleContainingIgnoreCase(ResourceEnums.Category.valueOf(category), query, pageable);
+            } else {
+                resources = resourceRepository.findAllByResourceCategory(ResourceEnums.Category.valueOf(category), pageable);
+            }
+        } else if (query != null) {
+            resources = resourceRepository.findAllByTitleContainingIgnoreCase(query, pageable);
         } else {
-            resources = resourceRepository.findAll();
+            resources = resourceRepository.findAll(pageable);
         }
-        return resources.stream().map(ResourceMapper::mapToResourceDto).toList();
+
+        return resources.map(ResourceMapper::mapToResourceDto);
     }
 
     public ResourceDto getResourceById(Long resourceId) {
         Resource resource = fetchResourceById(resourceId);
         ResourceDto dto = ResourceMapper.mapToResourceDto(resource);
 
-        if(getCurrentUser().getId() != null) {
+        if (getCurrentUser().getId() != null) {
             List<Comment> comments = commentRepository.findAllByResourceId(resourceId);
             List<CommentDto> commentDtoList = comments.stream().map(CommentMapper::mapToCommentDto).toList();
             dto.setComments(commentDtoList);
@@ -113,9 +121,10 @@ public class ResourceService {
     }
 
     // ====================== USER ======================
-    public List<ResourceDto> getResourcesByUserId(Long userId) {
-        List<Resource> resources = resourceRepository.findAllByUserId(userId);
-        return resources.stream().map(ResourceMapper::mapToResourceDto).toList();
+    public Page<ResourceDto> getResourcesByUserId(Long userId, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Resource> resources = resourceRepository.findAllByUserId(userId, pageable);
+        return resources.map(ResourceMapper::mapToResourceDto);
     }
 
     // ====================== COMMENTS ======================
