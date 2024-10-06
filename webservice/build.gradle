@@ -31,7 +31,6 @@ dependencies {
 	implementation 'io.digitallly2024:common-lib:1.0.0'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
